@@ -89,10 +89,12 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
     vPos.set(targetPos[0], targetPos[1], targetPos[2]);
     vLook.set(targetLookAt[0], targetLookAt[1], targetLookAt[2]);
     
+    // Smooth camera track positions lerp execution
     state.camera.position.lerp(vPos, 0.05);
     
-    const controls = state.camera.metadata ? null : (state.controls as any);
-    if (controls) {
+    // FIXED TYPE CAST: Safely targets control loop anchors without property metadata errors on build execution
+    const controls = state.controls as any;
+    if (controls && typeof controls.update === "function") {
       controls.target.lerp(vLook, 0.05);
       controls.update();
     }
@@ -105,10 +107,9 @@ function CarModel() {
   const { scene } = useGLTF("/car.glb");
   const [isMobile, setIsMobile] = useState(false);
 
-  // Safely tracks window dimensions without triggering server-side mismatch warnings
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile(); // Run on initial mounts
+    checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
@@ -116,7 +117,6 @@ function CarModel() {
   return (
     <primitive 
       object={scene} 
-      // FIXED: Safely dials down the scale factor on mobile phones to sit cleanly within the container box
       scale={isMobile ? 1.2 : 1.8} 
       position={[0, -0.5, 0]} 
     />
@@ -157,7 +157,7 @@ export default function InteractiveBlueprint() {
                 onClick={() => setActiveIdx(index)}
                 className={`text-left px-5 py-3.5 rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest border transition-all shrink-0 snap-center cursor-pointer ${
                   activeIdx === index 
-                    ? "bg-primary text-black border-primary shadow-[0_0_20px_rgba(0,229,255,0.2)]" 
+                    ? "bg-primary text-black border-primary shadow-[0_0_20px_rgba(0,112,243,0.2)]" 
                     : "bg-card text-gray-400 border-white/5 hover:border-white/10 hover:text-white"
                 }`}
               >
@@ -177,7 +177,8 @@ export default function InteractiveBlueprint() {
             <ambientLight intensity={1.5} />
             <spotLight position={[0, 20, 0]} angle={0.6} penumbra={1} intensity={2.5} castShadow shadow-bias={-0.0001} />
             <directionalLight position={[10, 5, 10]} intensity={2.0} color="#ffffff" />
-            <directionalLight position={[-10, 5, -5]} intensity={2.5} color="#00E5FF" />
+            {/* MATCHED BRAND IDENTITY LIGHTING LAYER: Changed from cyan to deep royal blue tint */}
+            <directionalLight position={[-10, 5, -5]} intensity={2.5} color="#0070F3" />
             <directionalLight position={[0, 5, -10]} intensity={1.5} color="#ffffff" />
             
             <Suspense fallback={null}>
@@ -222,7 +223,7 @@ export default function InteractiveBlueprint() {
 
                 <div className="space-y-3.5 mt-5">
                   {currentRegion.features.map((feat, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs font-semibold text-gray-400">
+                    <div key={i} className="flex items-start gap-2.5 text-xs font-semibold text-gray-300">
                       <CheckCircle2 size={13} className="text-primary shrink-0 mt-0.5" />
                       <span className="leading-tight text-gray-300">{feat}</span>
                     </div>
@@ -234,7 +235,7 @@ export default function InteractiveBlueprint() {
                 href={`https://wa.me/919666200900?text=I%20want%20to%20book%20a%20slot%20for%20${currentRegion.service}%20at%20Wit%20Studio.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full mt-6 md:mt-8 py-4 bg-primary text-black font-black text-xs tracking-widest rounded-xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(0,229,255,0.15)] uppercase"
+                className="w-full mt-6 md:mt-8 py-4 bg-primary text-black font-black text-xs tracking-widest rounded-xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(0,112,243,0.15)] uppercase"
               >
                 BOOK SERVICE <ArrowUpRight size={13} />
               </a>
