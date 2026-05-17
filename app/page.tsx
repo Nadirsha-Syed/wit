@@ -20,6 +20,7 @@ import Car3D from "@/components/Car3D";
 import InteractiveBlueprint from "@/components/InteractiveBlueprint";
 import StudioDashboard from "@/components/StudioDashboard";
 import TransformationSlider from "@/components/TransformationSlider";
+import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 
 const tiers = [
@@ -183,7 +184,7 @@ export default function Home() {
         <InteractiveBlueprint />
       </section>
 
-      {/* 5. MEMBERSHIP PACKAGES — UPDATED RESPONSIVE COMPACT DESIGN */}
+      {/* 5. MEMBERSHIP PACKAGES — SLIM RESPONSIVE PLATFORM BOXES */}
       <section id="membership" className="py-20 px-4 md:px-6 relative bg-gradient-to-b from-[#050505] to-[#090909] scroll-mt-20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -191,7 +192,6 @@ export default function Home() {
             <p className="text-primary text-[10px] tracking-[0.5em] font-bold uppercase">Save Big with Multi-Wash Packages</p>
           </div>
 
-          {/* DYNAMIC FLEX RESPONSIVE STRIP MAPPING */}
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {tiers.map((tier, idx) => (
               <div 
@@ -207,7 +207,7 @@ export default function Home() {
                   className="relative w-full h-full [transform-style:preserve-3d] min-h-[260px] md:min-h-[300px]"
                 >
                   
-                  {/* FRONT CARD PANEL — COMPACT HEIGHT BALANCED SLOT */}
+                  {/* FRONT CARD PANEL */}
                   <div className="absolute inset-0 backface-hidden bg-card border border-white/5 rounded-[2rem] p-6 md:p-8 flex flex-col justify-between overflow-hidden shadow-xl">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.01] rounded-full blur-2xl" />
                     <div className="space-y-2">
@@ -223,7 +223,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* BACK CARD PANEL — REVEALS ON ELEMENT ROTATION */}
+                  {/* BACK CARD PANEL */}
                   <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)] bg-primary rounded-[2rem] p-6 md:p-8 flex flex-col justify-between text-black shadow-2xl">
                     <div className="space-y-4">
                       <div className="flex justify-between items-baseline border-b border-black/10 pb-3">
@@ -231,7 +231,6 @@ export default function Home() {
                         <h4 className="text-3xl font-black tracking-tight font-mono">{tier.price}</h4>
                       </div>
                       
-                      {/* COMPACT CLEAN TARGET LIST */}
                       <div className="space-y-2">
                         {tier.benefits.map((benefit, j) => (
                           <div key={j} className="flex items-start gap-2 font-bold text-[11px] md:text-xs tracking-tight leading-tight">
@@ -258,6 +257,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 5.5 CUSTOMER TRUST SHOWROOM CARD HUB */}
+      <Testimonials />
 
       {/* 6. MULTI-BRANCH MAPS & SOCIAL LINK DIRECTORY FOOTER */}
       <Footer />
