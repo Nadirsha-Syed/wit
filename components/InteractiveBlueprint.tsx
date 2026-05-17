@@ -45,9 +45,10 @@ const regions = [
     mobileLabel: "Underbody",
     service: "Anti-Rust Coating", 
     price: "Starting ₹5,000", 
-    camPos: [0, -0.6, 2.8], 
-    lookAt: [-0.06, -1.35, -0.64], 
-    features: ["Thick Bitumen Coated Rust Barrier", "Corrosion Prevention Shield Coating", "Monsoon Road Salt Insulation"] 
+    // PERFECTED UNDERBODY MATRIX: Lifted height bounds and backed off focus vectors away from dead center ground plane collision boundaries
+    camPos: [0, 0.8, 6.0], 
+    lookAt: [0, -1.2, 0], 
+    features: ["Thick Bitumen Coated Rust Barrier", "Corrosion Prevention Shield Coating", "Monsoon Road Salt Isolation"] 
   },
   { 
     id: "windows", 
@@ -89,10 +90,8 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
     vPos.set(targetPos[0], targetPos[1], targetPos[2]);
     vLook.set(targetLookAt[0], targetLookAt[1], targetLookAt[2]);
     
-    // Smooth camera track positions lerp execution
     state.camera.position.lerp(vPos, 0.05);
     
-    // FIXED TYPE CAST: Safely targets control loop anchors without property metadata errors on build execution
     const controls = state.controls as any;
     if (controls && typeof controls.update === "function") {
       controls.target.lerp(vLook, 0.05);
@@ -105,6 +104,18 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
 
 function CarModel() {
   const { scene } = useGLTF("/car.glb");
+  return (
+    <primitive 
+      object={scene} 
+      scale={1.8} 
+      position={[0, -0.5, 0]} 
+    />
+  );
+}
+
+export default function InteractiveBlueprint() {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const currentRegion = regions[activeIdx];
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -114,28 +125,17 @@ function CarModel() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  return (
-    <primitive 
-      object={scene} 
-      scale={isMobile ? 1.2 : 1.8} 
-      position={[0, -0.5, 0]} 
-    />
-  );
-}
-
-export default function InteractiveBlueprint() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const currentRegion = regions[activeIdx];
+  // Sync internal viewport changes down into nested model rendering components
+  const adjustedScale = isMobile ? 1.2 : 1.8;
 
   return (
     <section id="blueprint" className="py-20 px-4 md:px-6 bg-[#050505] relative border-t border-white/5 overflow-hidden scroll-mt-20">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[160px] pointer-events-none" />
 
-      {/* STACKED ON MOBILE TIER FLUID GRID OUTLINE */}
       <div className="max-w-7xl mx-auto flex flex-col lg:grid lg:grid-cols-12 gap-6 md:gap-8 items-center relative z-10">
         
         {/* ========================================================================= */}
-        {/* 1. SELECTION CONTROLS HUB (TOP MENU ON MOBILE, LEFT COLUMN ON DESKTOP)     */}
+        {/* 1. SELECTION CONTROLS HUB                                                 */}
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-3 space-y-4 order-1">
           <div>
@@ -149,7 +149,6 @@ export default function InteractiveBlueprint() {
             </p>
           </div>
 
-          {/* MENUS SCROLL INTERACTION LINE FOR SMALL AND MONITORS VIEWPORTS */}
           <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto pb-3 lg:pb-0 scrollbar-hide snap-x w-full lg:max-w-xs">
             {regions.map((reg, index) => (
               <button
@@ -169,27 +168,28 @@ export default function InteractiveBlueprint() {
         </div>
 
         {/* ========================================================================= */}
-        {/* 2. THREE.JS 3D SHOWROOM PREVIEW BOX (CENTER FRAME WORKSPACE)               */}
+        {/* 2. THREE.JS 3D SHOWROOM PREVIEW BOX                                       */}
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-6 h-[300px] md:h-[550px] bg-card/20 border border-white/5 rounded-[2rem] md:rounded-[3.5rem] relative overflow-hidden backdrop-blur-sm order-2 shadow-2xl">
-          <Canvas dpr={[1, 2]} shadows>
+          <Canvas dpr={isMobile ? [1, 1.5] : [1, 2]} shadows>
             <PerspectiveCamera makeDefault position={[0, 2, 7]} fov={35} />
             <ambientLight intensity={1.5} />
             <spotLight position={[0, 20, 0]} angle={0.6} penumbra={1} intensity={2.5} castShadow shadow-bias={-0.0001} />
             <directionalLight position={[10, 5, 10]} intensity={2.0} color="#ffffff" />
-            {/* MATCHED BRAND IDENTITY LIGHTING LAYER: Changed from cyan to deep royal blue tint */}
             <directionalLight position={[-10, 5, -5]} intensity={2.5} color="#0070F3" />
             <directionalLight position={[0, 5, -10]} intensity={1.5} color="#ffffff" />
             
             <Suspense fallback={null}>
-              <CarModel />
+              <group scale={adjustedScale}>
+                <CarModel />
+              </group>
               <StableRig targetPos={currentRegion.camPos} targetLookAt={currentRegion.lookAt} />
               <OrbitControls makeDefault enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 1.9} />
-              <ContactShadows position={[0, -0.51, 0]} opacity={0.6} scale={12} blur={2.4} far={2} />
+              {/* PERFORMANCE OPTIMIZED SHADOW LAYER: Drops calculation depth on mobile frames */}
+              <ContactShadows position={[0, -0.51, 0]} opacity={isMobile ? 0.35 : 0.6} scale={12} blur={isMobile ? 3.2 : 2.4} far={2} />
             </Suspense>
           </Canvas>
           
-          {/* Tag Identifier Badge Overlay */}
           <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 p-3 md:p-4 rounded-xl bg-black/70 border border-white/5 backdrop-blur-md pointer-events-none">
             <div className="flex items-center gap-1.5 text-[8px] font-bold text-primary tracking-widest uppercase">
               <Eye size={10} /> 3D RADAR VIEW
@@ -199,7 +199,7 @@ export default function InteractiveBlueprint() {
         </div>
 
         {/* ========================================================================= */}
-        {/* 3. DETAILS & FEATURE BREAKDOWN OVERLAY CARD (RIGHT SIDE PANEL)             */}
+        {/* 3. DETAILS & FEATURE BREAKDOWN OVERLAY CARD                               */}
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-3 order-3">
           <AnimatePresence mode="wait">
@@ -223,7 +223,7 @@ export default function InteractiveBlueprint() {
 
                 <div className="space-y-3.5 mt-5">
                   {currentRegion.features.map((feat, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs font-semibold text-gray-300">
+                    <div key={i} className="flex items-start gap-2.5 text-xs font-semibold text-gray-400">
                       <CheckCircle2 size={13} className="text-primary shrink-0 mt-0.5" />
                       <span className="leading-tight text-gray-300">{feat}</span>
                     </div>
@@ -247,3 +247,6 @@ export default function InteractiveBlueprint() {
     </section>
   );
 }
+
+// MEMORY OPTIMIZATION PRELOADER HOOK: Keeps the compressed 3D asset cached in GPU memory
+useGLTF.preload("/car.glb");
