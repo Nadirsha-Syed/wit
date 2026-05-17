@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { Sparkles, AlertTriangle } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export default function TransformationSlider() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,7 +11,7 @@ export default function TransformationSlider() {
   // High-performance hardware-accelerated motion values
   const sliderPosition = useMotionValue(50); 
 
-  // Directly map the raw percentage to layout tracking streams
+  // Maps the tracking values to handle left-to-right window masking reveal flow
   const leftHandleStyle = useTransform(sliderPosition, (v) => `${v}%`);
   const clipPercentage = useTransform(sliderPosition, (v) => `${v}%`);
 
@@ -23,7 +23,7 @@ export default function TransformationSlider() {
     sliderPosition.set(percentage);
   };
 
-  // Listens to global window move frames seamlessly to avoid drag release stuttering
+  // Global window listeners to keep drag events uniform across mobile and desktop frames
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
@@ -63,11 +63,11 @@ export default function TransformationSlider() {
             THE GLOSS <span className="text-primary italic">TRANSFORMATION</span>
           </h2>
           <p className="text-gray-500 text-xs tracking-wide max-w-md mx-auto mt-2 leading-relaxed">
-            Drag the middle line slider right and left to reveal the true transformation differences across our detailing bay tracks.
+            Drag the middle slider line left and right to reveal the authentic multi-stage restoration layout tracks.
           </p>
         </div>
 
-        {/* INTERACTIVE WORKSPACE VIEWPORT LAYER */}
+        {/* SLIDER WORKSPACE VIEWPORT */}
         <div 
           ref={containerRef}
           className="w-full aspect-[16/10] md:aspect-[16/8] rounded-[2rem] md:rounded-[3rem] bg-card border border-white/5 relative overflow-hidden select-none cursor-ew-resize shadow-2xl"
@@ -79,46 +79,47 @@ export default function TransformationSlider() {
           }}
         >
           {/* ========================================================================= */}
-          {/* 1. BEFORE LAYER: STATIC BASE VIEWPORT                                     */}
+          {/* 1. BASE BACKGROUND TIER: AFTER HIGH-GLOSS PICTURE LAYOUT                 */}
           {/* ========================================================================= */}
           <div className="absolute inset-0 w-full h-full bg-neutral-950 z-0">
             <img 
-              src="/before-detailing.jpg" 
-              alt="Before Paint Detailing Work"
-              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-50"
+              src="/after-detailing.jpg" 
+              alt="Wit Studio High Gloss Finish"
+              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
             />
-            {/* Styled Left Identity Tag */}
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 px-4 py-2.5 rounded-xl bg-black/80 border border-red-500/20 backdrop-blur-md flex items-center gap-2 text-red-400 font-mono text-[9px] md:text-xs font-black uppercase tracking-widest z-20 pointer-events-none">
-              <AlertTriangle size={12} className="animate-pulse shrink-0" /> FACTORY DULL / SWIRLED PAINT
+            {/* Minimal Right Aligned Label */}
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 px-4 py-2 rounded-xl bg-[#0070F3]/20 border border-[#0070F3]/40 backdrop-blur-md flex items-center gap-1.5 text-primary font-mono text-[10px] md:text-xs font-black uppercase tracking-widest z-20 pointer-events-none shadow-[0_0_15px_rgba(0,112,243,0.2)]">
+              <Sparkles size={11} className="text-primary" /> AFTER
             </div>
           </div>
 
           {/* ========================================================================= */}
-          {/* 2. AFTER LAYER: DYNAMIC CLIP VIEWER WINDOW CLOSURE                         */}
+          {/* 2. DYNAMIC WINDOW MASK TIER: BEFORE PICTURE VIEWPORT LAYER                 */}
           {/* ========================================================================= */}
-          {/* FIXED: Keeps image at 100% size, sliding handle simply cuts the window boundary dynamically */}
+          {/* Clips the before frame on top. Both asset textures stay 100% wide so they NEVER warp or squish */}
           <motion.div 
             className="absolute inset-0 w-full h-full bg-neutral-950 pointer-events-none z-10 overflow-hidden"
             style={{ clipPath: useTransform(clipPercentage, (p) => `polygon(0 0, ${p} 0, ${p} 100%, 0 100%)`) }}
           >
             <img 
-              src="/after-detailing.jpg" 
-              alt="Wit Studio Premium Treatment Finish"
-              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+              src="/before-detailing.jpg" 
+              alt="Factory Dull Paint Defect Sample"
+              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-65"
             />
-            {/* Styled Right Identity Tag with Premium Blue Branding */}
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 px-4 py-2.5 rounded-xl bg-[#0070F3]/10 border border-[#0070F3]/30 backdrop-blur-md flex items-center gap-2 text-primary font-mono text-[9px] md:text-xs font-black uppercase tracking-widest z-20 pointer-events-none shadow-[0_0_20px_rgba(0,112,243,0.25)]">
-              <Sparkles size={12} className="text-primary shrink-0" /> WIT STUDIO ULTRA GLOSS FINISH
+            {/* Minimal Left Aligned Label */}
+            <div className="absolute top-4 left-4 md:top-6 md:left-6 px-4 py-2 rounded-xl bg-black/80 border border-white/5 backdrop-blur-md text-gray-400 font-mono text-[10px] md:text-xs font-black uppercase tracking-widest z-20 pointer-events-none">
+              BEFORE
             </div>
           </motion.div>
 
           {/* ========================================================================= */}
-          {/* 3. HARDWARE SLIDER CONTROL HANDLE LINE BAR                                */}
+          {/* 3. HARDWARE SLIDER DIVIDER CONTROL HANDLE LINE                           */}
           {/* ========================================================================= */}
           <motion.div 
             className="absolute top-0 bottom-0 w-[2px] bg-primary z-30 pointer-events-none shadow-[0_0_15px_#0070F3]"
             style={{ left: leftHandleStyle }}
           >
+            {/* Orbit grip node toggle */}
             <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white text-black border-4 border-primary shadow-[0_0_20px_rgba(0,112,243,0.4)] z-40 flex items-center justify-center font-black text-sm select-none tracking-tighter">
               ↔
             </div>
