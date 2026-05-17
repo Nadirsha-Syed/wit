@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as THREE from "three";
 import { CheckCircle2, ArrowUpRight, Eye } from "lucide-react";
 
-// --- SIMPLIFIED JARGON-FREE LOCAL BALANCED MATRIX ---
+// --- RE-CALIBRATED BOUNDING FOCUS MATRIX ---
 const regions = [
   { 
     id: "hood", 
@@ -15,8 +15,8 @@ const regions = [
     mobileLabel: "Hood",
     service: "Ceramic Coating", 
     price: "Starting ₹18,000", 
-    camPos: [0, 2.5, 5.0], 
-    lookAt: [-0.22, -0.21, 2.61], 
+    camPos: [0.0, 2.5, 5.0], // Safe diagnostic clearance distance
+    lookAt: [-0.22, -0.21, 2.61], // Center bonnet anchor node
     features: ["9H Ultra-Hard Nano Glass Shield", "Super Hydrophobic Water Beading", "3-Year Mirror Gloss Retention"] 
   },
   { 
@@ -25,8 +25,8 @@ const regions = [
     mobileLabel: "Body / PPF",
     service: "Paint Protection Film (PPF)", 
     price: "Starting ₹45,000", 
-    camPos: [-4.5, 1.8, 2.5], 
-    lookAt: [-1.56, -0.43, -0.05], 
+    camPos: [-5.0, 1.2, 1.5], // Offset wide view for full side door profiling
+    lookAt: [-1.56, -0.43, -0.05], // Right door surface track
     features: ["Self-Healing TPU Film Armour", "180 Micron Thick Stone-Chip Protection", "8-Year Clear Non-Yellowing Warranty"] 
   },
   { 
@@ -35,8 +35,8 @@ const regions = [
     mobileLabel: "Wheels",
     service: "Alloy Wheel Detailing", 
     price: "Starting ₹4,500", 
-    camPos: [4.0, 0.2, 4.0], 
-    lookAt: [1.39, -1.04, 2.41], 
+    camPos: [4.2, 0.2, 4.5], // Dropped low angle framing the wheel well space cleanly
+    lookAt: [1.39, -1.04, 2.41], // Wheel alloy node center point
     features: ["Deep Brake Dust Decontamination", "High-Heat Ceramic Brake Barrier", "Long-Lasting Gloss Rim Protection"] 
   },
   { 
@@ -45,9 +45,8 @@ const regions = [
     mobileLabel: "Underbody",
     service: "Anti-Rust Coating", 
     price: "Starting ₹5,000", 
-    // PERFECTED UNDERBODY MATRIX: Lifted height bounds and backed off focus vectors away from dead center ground plane collision boundaries
-    camPos: [0, 0.8, 6.0], 
-    lookAt: [0, -1.2, 0], 
+    camPos: [0.0, 0.4, 5.5], // Clear chassis profile line height limits
+    lookAt: [-0.06, -1.35, -0.64], // Low center frame bottom mount
     features: ["Thick Bitumen Coated Rust Barrier", "Corrosion Prevention Shield Coating", "Monsoon Road Salt Isolation"] 
   },
   { 
@@ -56,8 +55,8 @@ const regions = [
     mobileLabel: "Windows",
     service: "Premium Sun Film", 
     price: "Starting ₹8,000", 
-    camPos: [0, 2.2, 4.5], 
-    lookAt: [-0.12, 0.22, 1.08], 
+    camPos: [0.0, 2.8, 4.2], // Elevated look checking windshield glass angles
+    lookAt: [-0.12, 0.22, 1.08], // Front glass sheet surface target
     features: ["99% UV Ray Rejection Shielding", "Advanced Infrared Car Heat Reduction", "Shatter-Resistant Safety Glass Layer"] 
   },
   { 
@@ -66,8 +65,8 @@ const regions = [
     mobileLabel: "Wraps",
     service: "Premium Vinyl Wrapping", 
     price: "Starting ₹35,000", 
-    camPos: [0, 3.5, -5.0], 
-    lookAt: [-0.01, 0.62, -0.50], 
+    camPos: [0.0, 4.0, -5.5], // Flipped rearview monitoring point mapping top panels
+    lookAt: [-0.01, 0.62, -0.50], // Roof/upper panel target line
     features: ["Premium Cast Vinyl Material", "Endless Gloss, Satin or Matte Colors", "Protects Original Factory Clear Coat"] 
   },
   { 
@@ -76,8 +75,8 @@ const regions = [
     mobileLabel: "Interior",
     service: "Deep Cabin Detailing", 
     price: "Starting ₹4,500", 
-    camPos: [-3.8, 2.2, 1.5], 
-    lookAt: [-1.16, 0.28, -0.28], 
+    camPos: [-4.2, 1.8, 3.2], // Wide exterior entry line framing cabin geometry
+    lookAt: [-1.16, 0.28, -0.28], // Door glass interior cabin crosshair coordinate
     features: ["Anti-Bacterial Hot Steam Extraction", "Premium Leather Nourishing Cream", "Full Dashboard & AC Vent Cleaning"] 
   },
 ];
@@ -90,6 +89,7 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
     vPos.set(targetPos[0], targetPos[1], targetPos[2]);
     vLook.set(targetLookAt[0], targetLookAt[1], targetLookAt[2]);
     
+    // Smooth frame lerping transition tracks
     state.camera.position.lerp(vPos, 0.05);
     
     const controls = state.controls as any;
@@ -125,7 +125,6 @@ export default function InteractiveBlueprint() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Sync internal viewport changes down into nested model rendering components
   const adjustedScale = isMobile ? 1.2 : 1.8;
 
   return (
@@ -185,7 +184,6 @@ export default function InteractiveBlueprint() {
               </group>
               <StableRig targetPos={currentRegion.camPos} targetLookAt={currentRegion.lookAt} />
               <OrbitControls makeDefault enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 1.9} />
-              {/* PERFORMANCE OPTIMIZED SHADOW LAYER: Drops calculation depth on mobile frames */}
               <ContactShadows position={[0, -0.51, 0]} opacity={isMobile ? 0.35 : 0.6} scale={12} blur={isMobile ? 3.2 : 2.4} far={2} />
             </Suspense>
           </Canvas>
@@ -248,5 +246,4 @@ export default function InteractiveBlueprint() {
   );
 }
 
-// MEMORY OPTIMIZATION PRELOADER HOOK: Keeps the compressed 3D asset cached in GPU memory
 useGLTF.preload("/car.glb");
