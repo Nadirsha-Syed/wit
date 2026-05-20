@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic"; // Next.js high-performance code splitting utility
 import { 
   ArrowRight, 
   ShieldCheck, 
@@ -15,13 +16,16 @@ import {
   Sparkles
 } from "lucide-react";
 
-// Import custom sub-modules
-import Car3D from "@/components/Car3D";
-import InteractiveBlueprint from "@/components/InteractiveBlueprint";
-import StudioDashboard from "@/components/StudioDashboard";
-import TransformationSlider from "@/components/TransformationSlider";
-import Testimonials from "@/components/Testimonials";
+// Instant Initial Load Component Base
 import Footer from "@/components/Footer";
+
+// HEAVY 3D & INTERACTIVE RENDERING SUB-MODULES CODE SPLITTING
+// This completely eliminates initial rendering strain and landing page lag on new devices
+const Car3D = dynamic(() => import("@/components/Car3D"), { ssr: false });
+const TransformationSlider = dynamic(() => import("@/components/TransformationSlider"), { ssr: false });
+const StudioDashboard = dynamic(() => import("@/components/StudioDashboard"), { ssr: false });
+const InteractiveBlueprint = dynamic(() => import("@/components/InteractiveBlueprint"), { ssr: false });
+const Testimonials = dynamic(() => import("@/components/Testimonials"), { ssr: false });
 
 const tiers = [
   {
@@ -68,9 +72,9 @@ export default function Home() {
           
           {/* BRAND NAV EMBLEM */}
           <motion.div
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             className="flex flex-col items-center justify-center mb-10 w-full relative"
           >
             <div className="absolute top-0 w-[300px] md:w-[400px] h-[100px] bg-primary/10 rounded-full blur-[60px] pointer-events-none" />
@@ -93,7 +97,6 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-6 text-[9px] font-bold text-primary tracking-widest uppercase"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
@@ -103,31 +106,26 @@ export default function Home() {
           {/* MAIN HEADLINES */}
           <div className="space-y-2 md:space-y-4">
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
               className="text-4xl md:text-[7.5rem] font-black tracking-tighter text-white leading-[0.85] uppercase"
             >
               PREMIUM CAR CARE
             </motion.h1>
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
               className="text-4xl md:text-[7.5rem] font-black tracking-tighter text-primary italic leading-[0.85] uppercase"
             >
               EXPERIENCE.
             </motion.h1>
           </div>
           
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-10 text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.6em] font-light"
-          >
+          <p className="mt-10 text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.6em] font-light">
             Protection • Perfection • Prestige
-          </motion.p>
+          </p>
         </div>
 
         {/* 3D CAR CANVAS */}
@@ -147,7 +145,7 @@ export default function Home() {
           </a>
           <button 
             onClick={() => scrollToSection("dashboard")}
-            className="w-full sm:w-auto px-8 py-4 bg-primary text-black font-black text-xs tracking-[0.15em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,229,255,0.25)] flex items-center justify-center gap-3 cursor-pointer"
+            className="w-full sm:w-auto px-8 py-4 bg-primary text-black font-black text-xs tracking-[0.15em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,112,243,0.25)] flex items-center justify-center gap-3 cursor-pointer"
           >
             TRY LIVE DEMO PORTAL <ArrowRight size={14} />
           </button>
@@ -157,11 +155,8 @@ export default function Home() {
       {/* STATS COUNTERS */}
       <section id="services" className="max-w-7xl mx-auto px-4 md:px-6 py-16 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 scroll-mt-20">
         {stats.map((stat, i) => (
-          <motion.div
+          <div
             key={i}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             className="p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] bg-card border border-white/5 flex flex-col items-center text-center group hover:border-primary/20 transition-all duration-500"
           >
             <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 md:mb-6">
@@ -169,7 +164,7 @@ export default function Home() {
             </div>
             <span className="text-2xl md:text-4xl font-black text-white tracking-tighter">{stat.value}</span>
             <span className="text-[8px] md:text-[9px] text-gray-500 uppercase tracking-[0.35em] mt-2 font-bold leading-relaxed">{stat.label}</span>
-          </motion.div>
+          </div>
         ))}
       </section>
 
@@ -184,7 +179,7 @@ export default function Home() {
         <InteractiveBlueprint />
       </section>
 
-      {/* 5. MEMBERSHIP PACKAGES — SLIM RESPONSIVE PLATFORM BOXES */}
+      {/* 5. MEMBERSHIP PACKAGES — COMPACT CARD GRID STRUCTURE */}
       <section id="membership" className="py-20 px-4 md:px-6 relative bg-gradient-to-b from-[#050505] to-[#090909] scroll-mt-20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -203,7 +198,7 @@ export default function Home() {
               >
                 <motion.div
                   animate={{ rotateY: activeTier === idx ? 180 : 0 }}
-                  transition={{ duration: 0.5, type: "spring", stiffness: 120, damping: 22 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="relative w-full h-full [transform-style:preserve-3d] min-h-[260px] md:min-h-[300px]"
                 >
                   
@@ -217,9 +212,9 @@ export default function Home() {
                       </h3>
                     </div>
                     <div className="flex items-center gap-2 text-gray-500 text-[9px] font-bold tracking-wider group-hover:text-primary transition-colors uppercase mt-6 pt-4 border-t border-white/5">
-                      <Sparkles size={11} className="text-primary animate-pulse" />
+                      <Sparkles size={11} className="text-primary" />
                       <span>Tap or Hover to see pricing</span>
-                      <ChevronDown size={11} className="ml-auto animate-bounce text-gray-600" />
+                      <ChevronDown size={11} className="ml-auto text-gray-600" />
                     </div>
                   </div>
 

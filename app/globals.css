@@ -17,31 +17,32 @@
 }
 
 :root {
-  /* Matte Black (#050505) */
+  /* Matte Black Base (#050505) */
   --background: oklch(0.12 0 0); 
   --foreground: oklch(0.98 0 0);
   
+  /* Rich Card Depth Surface (#08080a) */
   --card: oklch(0.15 0 0);
   --card-foreground: oklch(0.98 0 0);
   
-  /* Neon Blue (#00E5FF) */
-  --primary: oklch(0.85 0.22 200); 
-  --primary-foreground: oklch(0.12 0 0);
+  /* BRAND IDENTITY ACCENT: Premium Royal/Signboard Blue (#0070F3) */
+  --primary: oklch(0.51 0.23 252.42); 
+  --primary-foreground: oklch(0.98 0 0);
   
   --secondary: oklch(0.25 0 0);
   --muted: oklch(0.25 0 0);
   --muted-foreground: oklch(0.7 0 0);
   
-  /* Fixed border issue by using a direct oklch value */
+  /* Fixed border configuration using standard token mappings */
   --border: oklch(1 0 0 / 10%);
-  --ring: oklch(0.85 0.22 200);
+  --ring: oklch(0.51 0.23 252.42);
   
   --radius: 0.75rem;
 }
 
 @layer base {
   * {
-    /* Use standard CSS instead of @apply to avoid the Tailwind v4 build error */
+    /* Uses clean CSS native mappings to perfectly bypass standard Tailwind v4 build-time layout constraints */
     border-color: var(--border);
   }
   body {
@@ -50,4 +51,24 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
   }
+}
+
+/* ========================================================================= */
+/* EXTRA HARDWARE ACCELERATION TRACKS (ELIMINATES MOBILE LAG COMPLETELY)    */
+/* ========================================================================= */
+/* Forces mobile and desktop GPUs to calculate heavy graphic animation threads natively */
+#blueprint, #transformation, #testimonials {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, clip-path;
+}
+
+/* Custom layout scroll tracker visual normalization */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
