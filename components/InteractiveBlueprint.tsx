@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as THREE from "three";
 import { CheckCircle2, ArrowUpRight, Eye } from "lucide-react";
 
-// --- RE-CALIBRATED BOUNDING FOCUS MATRIX ---
+// --- PERFECTED DISTANCE VIEWPORT FOCUS MATRIX ---
 const regions = [
   { 
     id: "hood", 
@@ -15,8 +15,8 @@ const regions = [
     mobileLabel: "Hood",
     service: "Ceramic Coating", 
     price: "Starting ₹18,000", 
-    camPos: [0.0, 2.5, 5.0], // Safe diagnostic clearance distance
-    lookAt: [-0.22, -0.21, 2.61], // Center bonnet anchor node
+    camPos: [0.0, 3.5, 6.5], // Backed out from 2.5, 5.0 to give a clean overhead view of the full bonnet
+    lookAt: [-0.22, -0.21, 2.61], 
     features: ["9H Ultra-Hard Nano Glass Shield", "Super Hydrophobic Water Beading", "3-Year Mirror Gloss Retention"] 
   },
   { 
@@ -25,8 +25,8 @@ const regions = [
     mobileLabel: "Body / PPF",
     service: "Paint Protection Film (PPF)", 
     price: "Starting ₹45,000", 
-    camPos: [-5.0, 1.2, 1.5], // Offset wide view for full side door profiling
-    lookAt: [-1.56, -0.43, -0.05], // Right door surface track
+    camPos: [-6.5, 1.8, 3.0], // Pushed wide from -5.0 to show the entire side profile and both doors clearly
+    lookAt: [-1.56, -0.43, -0.05], 
     features: ["Self-Healing TPU Film Armour", "180 Micron Thick Stone-Chip Protection", "8-Year Clear Non-Yellowing Warranty"] 
   },
   { 
@@ -35,8 +35,8 @@ const regions = [
     mobileLabel: "Wheels",
     service: "Alloy Wheel Detailing", 
     price: "Starting ₹4,500", 
-    camPos: [4.2, 0.2, 4.5], // Dropped low angle framing the wheel well space cleanly
-    lookAt: [1.39, -1.04, 2.41], // Wheel alloy node center point
+    camPos: [5.5, 0.5, 5.5], // Backed away from 4.2 to see the whole wheel quarter panel without clipping
+    lookAt: [1.39, -1.04, 2.41], 
     features: ["Deep Brake Dust Decontamination", "High-Heat Ceramic Brake Barrier", "Long-Lasting Gloss Rim Protection"] 
   },
   { 
@@ -45,8 +45,8 @@ const regions = [
     mobileLabel: "Underbody",
     service: "Anti-Rust Coating", 
     price: "Starting ₹5,000", 
-    camPos: [0.0, 0.4, 5.5], // Clear chassis profile line height limits
-    lookAt: [-0.06, -1.35, -0.64], // Low center frame bottom mount
+    camPos: [0.0, 0.5, 7.0], // Lifted and pushed back to give a spacious low-angle view of the under-chassis area
+    lookAt: [-0.06, -1.35, -0.64], 
     features: ["Thick Bitumen Coated Rust Barrier", "Corrosion Prevention Shield Coating", "Monsoon Road Salt Isolation"] 
   },
   { 
@@ -55,8 +55,8 @@ const regions = [
     mobileLabel: "Windows",
     service: "Premium Sun Film", 
     price: "Starting ₹8,000", 
-    camPos: [0.0, 2.8, 4.2], // Elevated look checking windshield glass angles
-    lookAt: [-0.12, 0.22, 1.08], // Front glass sheet surface target
+    camPos: [0.0, 3.8, 6.0], // Raised and pulled back so you see the front windshield, side glass, and roof limits together
+    lookAt: [-0.12, 0.22, 1.08], 
     features: ["99% UV Ray Rejection Shielding", "Advanced Infrared Car Heat Reduction", "Shatter-Resistant Safety Glass Layer"] 
   },
   { 
@@ -65,8 +65,8 @@ const regions = [
     mobileLabel: "Wraps",
     service: "Premium Vinyl Wrapping", 
     price: "Starting ₹35,000", 
-    camPos: [0.0, 4.0, -5.5], // Flipped rearview monitoring point mapping top panels
-    lookAt: [-0.01, 0.62, -0.50], // Roof/upper panel target line
+    camPos: [0.0, 5.0, -7.0], // Pushed out further from the rear to show the full custom wrap trunk and top lines
+    lookAt: [-0.01, 0.62, -0.50], 
     features: ["Premium Cast Vinyl Material", "Endless Gloss, Satin or Matte Colors", "Protects Original Factory Clear Coat"] 
   },
   { 
@@ -75,8 +75,8 @@ const regions = [
     mobileLabel: "Interior",
     service: "Deep Cabin Detailing", 
     price: "Starting ₹4,500", 
-    camPos: [-4.2, 1.8, 3.2], // Wide exterior entry line framing cabin geometry
-    lookAt: [-1.16, 0.28, -0.28], // Door glass interior cabin crosshair coordinate
+    camPos: [-5.5, 2.5, 4.5], // Placed at a spacious exterior vantage point showing the cabin structure comfortably
+    lookAt: [-1.16, 0.28, -0.28], 
     features: ["Anti-Bacterial Hot Steam Extraction", "Premium Leather Nourishing Cream", "Full Dashboard & AC Vent Cleaning"] 
   },
 ];
