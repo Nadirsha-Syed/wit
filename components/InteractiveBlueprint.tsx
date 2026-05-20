@@ -86,7 +86,6 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
   const vLook = new THREE.Vector3();
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Monitor layout width rules directly within the animation rig frame loops
   useEffect(() => {
     const checkViewport = () => setIsDesktop(window.innerWidth >= 1024);
     checkViewport();
@@ -95,9 +94,8 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
   }, []);
 
   useFrame((state) => {
-    // INTELLIGENT VIEWPORT SCALING FILTER
-    // Keeps mobile tracking perfectly intact (1.0x) but safely pulls the camera back 
-    // by 1.45x on wide desktop grids to guarantee excellent spacious framing.
+    // INTELLIGENT DESKTOP VIEWPORT ACCORDION FILTER
+    // Keeps mobile framing standard (1.0x) but backs the camera out safely on desktop monitors
     const distanceMultiplier = isDesktop ? 1.45 : 1.0;
 
     vPos.set(
@@ -107,7 +105,6 @@ function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLoo
     );
     vLook.set(targetLookAt[0], targetLookAt[1], targetLookAt[2]);
     
-    // Smooth frame lerping transition tracks
     state.camera.position.lerp(vPos, 0.05);
     
     const controls = state.controls as any;
@@ -143,7 +140,6 @@ export default function InteractiveBlueprint() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Dynamic mesh scale parameters inside canvas boundaries
   const adjustedScale = isMobile ? 1.2 : 1.6;
 
   return (
@@ -186,16 +182,20 @@ export default function InteractiveBlueprint() {
         </div>
 
         {/* ========================================================================= */}
-        {/* 2. THREE.JS 3D SHOWROOM PREVIEW BOX                                       */}
+        {/* 2. THREE.JS 3D SHOWROOM PREVIEW BOX WITH BRAND LIGHTING                   */}
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-6 h-[300px] md:h-[550px] bg-card/20 border border-white/5 rounded-[2rem] md:rounded-[3.5rem] relative overflow-hidden backdrop-blur-sm order-2 shadow-2xl">
           <Canvas dpr={isMobile ? [1, 1.5] : [1, 2]} shadows>
             <PerspectiveCamera makeDefault position={isMobile ? [0, 2, 7] : [0, 2.8, 9.0]} fov={isMobile ? 35 : 28} />
-            <ambientLight intensity={1.5} />
-            <spotLight position={[0, 20, 0]} angle={0.6} penumbra={1} intensity={2.5} castShadow shadow-bias={-0.0001} />
-            <directionalLight position={[10, 5, 10]} intensity={2.0} color="#ffffff" />
-            <directionalLight position={[-10, 5, -5]} intensity={2.5} color="#0070F3" />
-            <directionalLight position={[0, 5, -10]} intensity={1.5} color="#ffffff" />
+            
+            {/* BRAND BLUE ILLUMINATION LAYER PROFILE */}
+            <ambientLight intensity={1.2} />
+            <spotLight position={[0, 20, 0]} angle={0.6} penumbra={1} intensity={2.0} castShadow shadow-bias={-0.0001} />
+            <directionalLight position={[10, 5, 10]} intensity={1.5} color="#ffffff" />
+            
+            {/* HIGH-INTENSITY BRAND ROYAL BLUE GLOSS SOURCE ACCENT */}
+            <directionalLight position={[-10, 5, -5]} intensity={3.5} color="#0070F3" />
+            <directionalLight position={[0, 5, -10]} intensity={1.2} color="#ffffff" />
             
             <Suspense fallback={null}>
               <group scale={adjustedScale}>
