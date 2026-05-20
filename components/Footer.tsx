@@ -28,8 +28,8 @@ export default function Footer() {
       rawPhone: "9666200900",
       handle: "@witsiddipet",
       link: "https://www.instagram.com/witsiddipet/",
-      // Clickable Google Maps Location Link
-      mapUrl: "https://maps.app.goo.gl/h3ycYLH1NnSo3Wik9;karimnagar-https://maps.app.goo.gl/pTTS5XUfRAgoeAeJ8;hanamkonda-https://maps.app.goo.gl/xghowQrTMwkiNsa37;--i" 
+      // FIXED: Clean, direct Google Maps search query link that opens natively on iOS/Android
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=WIT+CAR+WASH+%26+DETAILING+STUDIO+Siddipet" 
     },
     {
       name: "Karimnagar Branch",
@@ -37,7 +37,7 @@ export default function Footer() {
       rawPhone: "8886499902",
       handle: "@witdetailingstudio",
       link: "https://www.instagram.com/witdetailingstudio/",
-      mapUrl: "https://maps.google.com/?q=WIT+Studio+Karimnagar" 
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=WIT+Studio+Karimnagar" 
     },
     {
       name: "Hanamkonda Branch",
@@ -45,7 +45,7 @@ export default function Footer() {
       rawPhone: "9666771819",
       handle: "@wit_hanamkonda",
       link: "https://www.instagram.com/wit_hanamkonda/",
-      mapUrl: "https://maps.google.com/?q=WIT+Studio+Hanamkonda" 
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=WIT+Studio+Hanamkonda" 
     }
   ];
 
@@ -76,7 +76,7 @@ export default function Footer() {
           {branches.map((b, i) => (
             <div key={i} className="space-y-3 p-5 rounded-2xl bg-white/[0.01] border border-white/5 shadow-md flex flex-col justify-between">
               <div className="space-y-3">
-                {/* FIXED MAP REDIRECTION ROUTER CHANNEL */}
+                {/* PARSEABLE MAP REDIRECTION CHANNEL */}
                 <a 
                   href={b.mapUrl} 
                   target="_blank" 
@@ -104,9 +104,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* 2. FRANCHISE OPPORTUNITY CAPTURE SECTION                                 */}
-      {/* ========================================================================= */}
+      {/* 2. FRANCHISE OPPORTUNITY CAPTURE SECTION */}
       <div className="max-w-7xl mx-auto py-10 border-b border-white/5 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4 text-center md:text-left">
           <div className="w-10 h-10 rounded-2xl bg-[#0070F3]/10 border border-[#0070F3]/20 flex items-center justify-center text-primary shrink-0">
