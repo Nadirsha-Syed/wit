@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as THREE from "three";
 import { CheckCircle2, ArrowUpRight, Eye } from "lucide-react";
 
-// --- PERFECTED DISTANCE VIEWPORT FOCUS MATRIX ---
+// --- RE-CALIBRATED BOUNDING FOCUS MATRIX ---
 const regions = [
   { 
     id: "hood", 
@@ -15,7 +15,7 @@ const regions = [
     mobileLabel: "Hood",
     service: "Ceramic Coating", 
     price: "Starting ₹18,000", 
-    camPos: [0.0, 3.5, 6.5], // Backed out from 2.5, 5.0 to give a clean overhead view of the full bonnet
+    camPos: [0.0, 2.5, 5.0], 
     lookAt: [-0.22, -0.21, 2.61], 
     features: ["9H Ultra-Hard Nano Glass Shield", "Super Hydrophobic Water Beading", "3-Year Mirror Gloss Retention"] 
   },
@@ -25,7 +25,7 @@ const regions = [
     mobileLabel: "Body / PPF",
     service: "Paint Protection Film (PPF)", 
     price: "Starting ₹45,000", 
-    camPos: [-6.5, 1.8, 3.0], // Pushed wide from -5.0 to show the entire side profile and both doors clearly
+    camPos: [-5.0, 1.2, 1.5], 
     lookAt: [-1.56, -0.43, -0.05], 
     features: ["Self-Healing TPU Film Armour", "180 Micron Thick Stone-Chip Protection", "8-Year Clear Non-Yellowing Warranty"] 
   },
@@ -35,7 +35,7 @@ const regions = [
     mobileLabel: "Wheels",
     service: "Alloy Wheel Detailing", 
     price: "Starting ₹4,500", 
-    camPos: [5.5, 0.5, 5.5], // Backed away from 4.2 to see the whole wheel quarter panel without clipping
+    camPos: [4.2, 0.2, 4.5], 
     lookAt: [1.39, -1.04, 2.41], 
     features: ["Deep Brake Dust Decontamination", "High-Heat Ceramic Brake Barrier", "Long-Lasting Gloss Rim Protection"] 
   },
@@ -45,7 +45,7 @@ const regions = [
     mobileLabel: "Underbody",
     service: "Anti-Rust Coating", 
     price: "Starting ₹5,000", 
-    camPos: [0.0, 0.5, 7.0], // Lifted and pushed back to give a spacious low-angle view of the under-chassis area
+    camPos: [0.0, 0.4, 5.5], 
     lookAt: [-0.06, -1.35, -0.64], 
     features: ["Thick Bitumen Coated Rust Barrier", "Corrosion Prevention Shield Coating", "Monsoon Road Salt Isolation"] 
   },
@@ -55,7 +55,7 @@ const regions = [
     mobileLabel: "Windows",
     service: "Premium Sun Film", 
     price: "Starting ₹8,000", 
-    camPos: [0.0, 3.8, 6.0], // Raised and pulled back so you see the front windshield, side glass, and roof limits together
+    camPos: [0.0, 2.8, 4.2], 
     lookAt: [-0.12, 0.22, 1.08], 
     features: ["99% UV Ray Rejection Shielding", "Advanced Infrared Car Heat Reduction", "Shatter-Resistant Safety Glass Layer"] 
   },
@@ -65,7 +65,7 @@ const regions = [
     mobileLabel: "Wraps",
     service: "Premium Vinyl Wrapping", 
     price: "Starting ₹35,000", 
-    camPos: [0.0, 5.0, -7.0], // Pushed out further from the rear to show the full custom wrap trunk and top lines
+    camPos: [0.0, 4.0, -5.5], 
     lookAt: [-0.01, 0.62, -0.50], 
     features: ["Premium Cast Vinyl Material", "Endless Gloss, Satin or Matte Colors", "Protects Original Factory Clear Coat"] 
   },
@@ -75,7 +75,7 @@ const regions = [
     mobileLabel: "Interior",
     service: "Deep Cabin Detailing", 
     price: "Starting ₹4,500", 
-    camPos: [-5.5, 2.5, 4.5], // Placed at a spacious exterior vantage point showing the cabin structure comfortably
+    camPos: [-4.2, 1.8, 3.2], 
     lookAt: [-1.16, 0.28, -0.28], 
     features: ["Anti-Bacterial Hot Steam Extraction", "Premium Leather Nourishing Cream", "Full Dashboard & AC Vent Cleaning"] 
   },
@@ -84,9 +84,27 @@ const regions = [
 function StableRig({ targetPos, targetLookAt }: { targetPos: number[], targetLookAt: number[] }) {
   const vPos = new THREE.Vector3();
   const vLook = new THREE.Vector3();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Monitor layout width rules directly within the animation rig frame loops
+  useEffect(() => {
+    const checkViewport = () => setIsDesktop(window.innerWidth >= 1024);
+    checkViewport();
+    window.addEventListener("resize", checkViewport);
+    return () => window.removeEventListener("resize", checkViewport);
+  }, []);
 
   useFrame((state) => {
-    vPos.set(targetPos[0], targetPos[1], targetPos[2]);
+    // INTELLIGENT VIEWPORT SCALING FILTER
+    // Keeps mobile tracking perfectly intact (1.0x) but safely pulls the camera back 
+    // by 1.45x on wide desktop grids to guarantee excellent spacious framing.
+    const distanceMultiplier = isDesktop ? 1.45 : 1.0;
+
+    vPos.set(
+      targetPos[0] * distanceMultiplier, 
+      targetPos[1] * distanceMultiplier, 
+      targetPos[2] * distanceMultiplier
+    );
     vLook.set(targetLookAt[0], targetLookAt[1], targetLookAt[2]);
     
     // Smooth frame lerping transition tracks
@@ -125,9 +143,7 @@ export default function InteractiveBlueprint() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // RESPONSIVE CAM PARAMETERS: Backs away safely on desktop grids to avoid tight clipping gaps
-  const cameraPosition: [number, number, number] = isMobile ? [0, 2, 7] : [0, 2.8, 9.0];
-  const cameraFov = isMobile ? 35 : 28;
+  // Dynamic mesh scale parameters inside canvas boundaries
   const adjustedScale = isMobile ? 1.2 : 1.6;
 
   return (
@@ -174,8 +190,7 @@ export default function InteractiveBlueprint() {
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-6 h-[300px] md:h-[550px] bg-card/20 border border-white/5 rounded-[2rem] md:rounded-[3.5rem] relative overflow-hidden backdrop-blur-sm order-2 shadow-2xl">
           <Canvas dpr={isMobile ? [1, 1.5] : [1, 2]} shadows>
-            {/* FIXED CAM ORIENTATION: Uses dynamic bounds to pad the frame flawlessly on desktop monitors */}
-            <PerspectiveCamera makeDefault position={cameraPosition} fov={cameraFov} />
+            <PerspectiveCamera makeDefault position={isMobile ? [0, 2, 7] : [0, 2.8, 9.0]} fov={isMobile ? 35 : 28} />
             <ambientLight intensity={1.5} />
             <spotLight position={[0, 20, 0]} angle={0.6} penumbra={1} intensity={2.5} castShadow shadow-bias={-0.0001} />
             <directionalLight position={[10, 5, 10]} intensity={2.0} color="#ffffff" />
