@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic"; // Next.js high-performance code splitting utility
+import dynamic from "next/dynamic"; 
 import { 
   ArrowRight, 
   ShieldCheck, 
@@ -19,9 +19,7 @@ import {
 // Instant Initial Load Component Base
 import Footer from "@/components/Footer";
 
-// HEAVY 3D & INTERACTIVE RENDERING SUB-MODULES CODE SPLITTING
-// This completely eliminates initial rendering strain and landing page lag on new devices
-const Car3D = dynamic(() => import("@/components/Car3D"), { ssr: false });
+// HIGH-PERFORMANCE INTERACTIVE RENDERING SUB-MODULES CODE SPLITTING
 const TransformationSlider = dynamic(() => import("@/components/TransformationSlider"), { ssr: false });
 const StudioDashboard = dynamic(() => import("@/components/StudioDashboard"), { ssr: false });
 const InteractiveBlueprint = dynamic(() => import("@/components/InteractiveBlueprint"), { ssr: false });
@@ -128,11 +126,31 @@ export default function Home() {
           </p>
         </div>
 
-        {/* 3D CAR CANVAS */}
-        <div className="w-full max-w-5xl mx-auto my-4 md:my-6 relative z-10">
-          <Car3D />
-        </div>
+        {/* ========================================================================= */}
+        {/* HARDWARE-ACCELERATED CAR PHOTOSHOOT VIDEO SHOWROOM CONTAINER              */}
+        {/* ========================================================================= */}
+        <div className="w-full max-w-5xl mx-auto my-6 px-2 relative z-10 group">
+          <div className="absolute inset-0 bg-[#0070F3]/5 rounded-[2rem] md:rounded-[3.5rem] blur-3xl pointer-events-none group-hover:bg-[#0070F3]/10 transition-all duration-700" />
+          
+          <div className="w-full aspect-[16/10] md:aspect-[16/7] rounded-[2rem] md:rounded-[3.5rem] bg-neutral-950 border border-white/5 relative overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
+            {/* Optimized High-Fidelity WEBM Video Pipeline Target */}
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-75"
+            >
+              <source src="/hero-detailing.webm" type="video/webm" />
+            </video>
 
+            {/* Gradient Mask Profiles */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/20 via-transparent to-[#050505]/20" />
+
+          </div>
+        </div>
+        
         {/* RE-ENGINEERED SIMPLE BUTTONS */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-lg px-4 relative z-30">
           <a 
@@ -179,7 +197,7 @@ export default function Home() {
         <InteractiveBlueprint />
       </section>
 
-      {/* 5. MEMBERSHIP PACKAGES — COMPACT CARD GRID STRUCTURE */}
+      {/* 5. MEMBERSHIP PACKAGES */}
       <section id="membership" className="py-20 px-4 md:px-6 relative bg-gradient-to-b from-[#050505] to-[#090909] scroll-mt-20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
