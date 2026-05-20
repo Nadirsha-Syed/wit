@@ -133,12 +133,21 @@ export default function Home() {
           <div className="absolute inset-0 bg-[#0070F3]/5 rounded-[2rem] md:rounded-[3.5rem] blur-3xl pointer-events-none group-hover:bg-[#0070F3]/10 transition-all duration-700" />
           
           <div className="w-full aspect-[16/10] md:aspect-[16/7] rounded-[2rem] md:rounded-[3.5rem] bg-neutral-950 border border-white/5 relative overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
-            {/* Optimized High-Fidelity WEBM Video Pipeline Target */}
+            {/* Optimized High-Fidelity WEBM Video Pipeline with Native GPU Overrides */}
             <video 
               autoPlay 
               loop 
               muted 
               playsInline
+              preload="auto"
+              controls={false}
+              style={{
+                WebkitTransform: "translate3d(0,0,0)",
+                transform: "translate3d(0,0,0)",
+                backfaceVisibility: "hidden",
+                perspective: 1000,
+                willChange: "transform"
+              }}
               className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-75"
             >
               <source src="/hero-detailing.webm" type="video/webm" />
@@ -147,7 +156,6 @@ export default function Home() {
             {/* Gradient Mask Profiles */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/40" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/20 via-transparent to-[#050505]/20" />
-
           </div>
         </div>
         
