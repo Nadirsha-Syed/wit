@@ -125,7 +125,10 @@ export default function InteractiveBlueprint() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const adjustedScale = isMobile ? 1.2 : 1.8;
+  // RESPONSIVE CAM PARAMETERS: Backs away safely on desktop grids to avoid tight clipping gaps
+  const cameraPosition: [number, number, number] = isMobile ? [0, 2, 7] : [0, 2.8, 9.0];
+  const cameraFov = isMobile ? 35 : 28;
+  const adjustedScale = isMobile ? 1.2 : 1.6;
 
   return (
     <section id="blueprint" className="py-20 px-4 md:px-6 bg-[#050505] relative border-t border-white/5 overflow-hidden scroll-mt-20">
@@ -138,7 +141,7 @@ export default function InteractiveBlueprint() {
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-3 space-y-4 order-1">
           <div>
-            <span className="text-[10px] font-black tracking-[0.5em] text-primary block uppercase">Interactive Blueprint</span>
+            <span className="text-[10px] font-black tracking-[0.5em] text-primary block uppercase mb-2">Interactive Blueprint</span>
             <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase leading-tight mt-1">
               OUR DETAILING <br className="hidden lg:block" />
               <span className="text-primary italic">SERVICES</span>
@@ -171,7 +174,8 @@ export default function InteractiveBlueprint() {
         {/* ========================================================================= */}
         <div className="w-full lg:col-span-6 h-[300px] md:h-[550px] bg-card/20 border border-white/5 rounded-[2rem] md:rounded-[3.5rem] relative overflow-hidden backdrop-blur-sm order-2 shadow-2xl">
           <Canvas dpr={isMobile ? [1, 1.5] : [1, 2]} shadows>
-            <PerspectiveCamera makeDefault position={[0, 2, 7]} fov={35} />
+            {/* FIXED CAM ORIENTATION: Uses dynamic bounds to pad the frame flawlessly on desktop monitors */}
+            <PerspectiveCamera makeDefault position={cameraPosition} fov={cameraFov} />
             <ambientLight intensity={1.5} />
             <spotLight position={[0, 20, 0]} angle={0.6} penumbra={1} intensity={2.5} castShadow shadow-bias={-0.0001} />
             <directionalLight position={[10, 5, 10]} intensity={2.0} color="#ffffff" />
