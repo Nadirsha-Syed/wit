@@ -198,7 +198,9 @@ export default function Home() {
       <TransformationSlider />
 
       {/* 3. HARDWARE OPERATIONAL PORTAL HUB */}
-      <StudioDashboard />
+      <section id="dashboard" className="scroll-mt-20">
+        <StudioDashboard />
+      </section>
 
       {/* 4. SERVICE BLUEPRINT GUIDE SHOWROOM */}
       <section id="blueprint" className="scroll-mt-20">
