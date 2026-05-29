@@ -148,7 +148,7 @@ export default function StudioDashboard() {
                     <div className="flex justify-between items-end border-b border-white/5 pb-3">
                       <div>
                         <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">VEHICLE OWNER</p>
-                        <p className="text-xs font-bold text-white tracking-wide mt-0.5">Nadirsha Syed</p>
+                        <p className="text-xs font-bold text-white tracking-wide mt-0.5">Syed</p>
                       </div>
                       <div className="text-right">
                         <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">CAR NUMBER</p>
@@ -291,7 +291,7 @@ export default function StudioDashboard() {
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-black text-white">Nadirsha Syed</span>
+                          <span className="text-sm font-black text-white">Syed</span>
                           <span className="text-[8px] font-bold text-yellow-500 border border-yellow-500/20 bg-yellow-500/5 px-1.5 rounded uppercase">GOLD MEMBER</span>
                         </div>
                         <p className="text-xs text-gray-500 font-medium font-mono mt-0.5">TS-09-AB-1234 • Global Multi-Pass Holder</p>

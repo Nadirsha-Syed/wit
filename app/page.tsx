@@ -125,39 +125,6 @@ export default function Home() {
             Protection • Perfection • Prestige
           </p>
         </div>
-
-        {/* ========================================================================= */}
-        {/* HARDWARE-ACCELERATED CAR PHOTOSHOOT VIDEO SHOWROOM CONTAINER              */}
-        {/* ========================================================================= */}
-        <div className="w-full max-w-5xl mx-auto my-6 px-2 relative z-10 group">
-          <div className="absolute inset-0 bg-[#0070F3]/5 rounded-[2rem] md:rounded-[3.5rem] blur-3xl pointer-events-none group-hover:bg-[#0070F3]/10 transition-all duration-700" />
-          
-          <div className="w-full aspect-[16/10] md:aspect-[16/7] rounded-[2rem] md:rounded-[3.5rem] bg-neutral-950 border border-white/5 relative overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
-            {/* Optimized High-Fidelity WEBM Video Pipeline with Native GPU Overrides */}
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              preload="auto"
-              controls={false}
-              style={{
-                WebkitTransform: "translate3d(0,0,0)",
-                transform: "translate3d(0,0,0)",
-                backfaceVisibility: "hidden",
-                perspective: 1000,
-                willChange: "transform"
-              }}
-              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-75"
-            >
-              <source src="/hero-detailing.webm" type="video/webm" />
-            </video>
-
-            {/* Gradient Mask Profiles */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/40" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/20 via-transparent to-[#050505]/20" />
-          </div>
-        </div>
         
         {/* RE-ENGINEERED SIMPLE BUTTONS */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-lg px-4 relative z-30">
