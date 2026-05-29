@@ -65,15 +65,15 @@ export default function Home() {
     <main className="relative min-h-screen bg-[#050505] text-foreground overflow-x-hidden selection:bg-primary/20 pb-20">
       
       {/* 1. HERO LAYER */}
-      <section className="relative z-10 pt-24 pb-10 px-4 md:px-6 max-w-7xl mx-auto min-h-[95vh] flex flex-col items-center justify-between">
-        <div className="text-center w-full max-w-6xl mx-auto">
+      <section className="relative z-10 pt-24 pb-16 px-4 md:px-6 max-w-7xl mx-auto min-h-[85vh] flex flex-col items-center justify-center">
+        <div className="text-center w-full max-w-6xl mx-auto space-y-8">
           
           {/* BRAND NAV EMBLEM */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col items-center justify-center mb-10 w-full relative"
+            className="flex flex-col items-center justify-center mb-6 w-full relative"
           >
             <div className="absolute top-0 w-[300px] md:w-[400px] h-[100px] bg-primary/10 rounded-full blur-[60px] pointer-events-none" />
 
@@ -95,7 +95,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-6 text-[9px] font-bold text-primary tracking-widest uppercase"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-[9px] font-bold text-primary tracking-widest uppercase"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
             3 LOCATIONS, 1 MEMBERSHIP • WORKS ACROSS TELANGANA
@@ -121,24 +121,26 @@ export default function Home() {
             </motion.h1>
           </div>
           
-          <p className="mt-10 text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.6em] font-light">
+          <p className="text-gray-500 text-[10px] md:text-xs uppercase tracking-[0.6em] font-light pb-4">
             Protection • Perfection • Prestige
           </p>
         </div>
         
-        {/* RE-ENGINEERED SIMPLE BUTTONS */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-lg px-4 relative z-30">
+        {/* ========================================================================= */}
+        {/* FIXED RESPONSIVE ACTION BUTTON GAP MATRIX                                 */}
+        {/* ========================================================================= */}
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 w-full max-w-xl px-4 mt-12 mb-6 relative z-30">
           <a 
             href="https://wa.me/919666200900?text=Hello%20Wit%20Studio,%20I%20want%20to%20book%20a%20car%20detailing%20slot." 
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto px-8 py-4 bg-[#25D366] text-black font-black text-xs tracking-[0.15em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg flex items-center justify-center gap-3 cursor-pointer"
+            className="w-full sm:w-1/2 px-8 py-4 bg-[#25D366] text-black font-black text-xs tracking-[0.15em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg flex items-center justify-center gap-3 cursor-pointer whitespace-nowrap"
           >
             <MessageSquare size={14} fill="black" /> BOOK ON WHATSAPP
           </a>
           <button 
             onClick={() => scrollToSection("dashboard")}
-            className="w-full sm:w-auto px-8 py-4 bg-primary text-black font-black text-xs tracking-[0.15em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,112,243,0.25)] flex items-center justify-center gap-3 cursor-pointer"
+            className="w-full sm:w-1/2 px-8 py-4 bg-primary text-black font-black text-xs tracking-[0.15em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,112,243,0.25)] flex items-center justify-center gap-3 cursor-pointer whitespace-nowrap"
           >
             TRY LIVE DEMO PORTAL <ArrowRight size={14} />
           </button>
